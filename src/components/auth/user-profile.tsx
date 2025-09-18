@@ -125,19 +125,7 @@ export function UserProfile() {
           </div>
           
           <div className="pt-6 border-t border-white/20">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1">
-                <LogoutButton />
-              </div>
-              <div className="flex-1">
-                <a 
-                  href="/users"
-                  className="w-full inline-flex items-center justify-center px-4 py-2 bg-transparent border border-white/30 text-white rounded-md hover:bg-white/10 hover:border-white/50 transition-colors"
-                >
-                  Explorar Usuarios
-                </a>
-              </div>
-            </div>
+            <LogoutButton />
           </div>
         </CardContent>
       </Card>

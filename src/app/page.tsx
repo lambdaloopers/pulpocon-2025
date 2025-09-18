@@ -1,6 +1,5 @@
 'use client'
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoginButton } from "@/components/auth/login-button";
@@ -19,7 +18,7 @@ export default function Home() {
               Tenta<span className="text-cyan-400">Cool</span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-200 mb-8 max-w-2xl mx-auto">
-              La plataforma más genial para conectar, colaborar y crear experiencias increíbles
+              La plataforma más genial para conectar, colaborar y crear experiencias increíbles en la PulpoCon 2025
             </p>
           </div>
 
@@ -57,32 +56,13 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="pt-6 space-y-4">
+                <div className="pt-6">
                   <LoginButton />
-                  <Link href="/users">
-                    <Button 
-                      variant="outline" 
-                      className="w-full bg-transparent border-white/30 text-white hover:bg-white/10 hover:border-white/50"
-                    >
-                      Explorar Usuarios
-                    </Button>
-                  </Link>
                 </div>
               </CardContent>
             </Card>
           )}
 
-          <div className="mt-16 text-center">
-            <p className="text-blue-300 text-lg mb-4">
-              ¿Listo para ser parte de algo increíble?
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-blue-200">
-              <span className="px-4 py-2 bg-white/10 rounded-full">✨ Innovación</span>
-              <span className="px-4 py-2 bg-white/10 rounded-full">🚀 Tecnología</span>
-              <span className="px-4 py-2 bg-white/10 rounded-full">💡 Creatividad</span>
-              <span className="px-4 py-2 bg-white/10 rounded-full">🌟 Experiencia</span>
-            </div>
-          </div>
         </main>
       </div>
     </div>
