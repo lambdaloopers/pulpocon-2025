@@ -1,9 +1,17 @@
+'use client'
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LoginButton } from "@/components/auth/login-button";
+import { UserProfile } from "@/components/auth/user-profile";
+import { useSession } from "next-auth/react";
+
 
 export default function Home() {
+  const { data: session, status } = useSession()
+
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -16,33 +24,39 @@ export default function Home() {
           priority
         />
         
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Welcome to Pulpocon 2025</CardTitle>
-            <CardDescription>
-              A modern web application built with Next.js, TypeScript, shadcn/ui, and Prisma
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              This application includes:
-            </p>
-            <ul className="text-sm space-y-1">
-              <li>• Next.js 15 with App Router</li>
-              <li>• TypeScript for type safety</li>
-              <li>• shadcn/ui components</li>
-              <li>• Prisma ORM with PostgreSQL</li>
-              <li>• User management system</li>
-            </ul>
-            <div className="pt-4">
-              <Link href="/users">
-                <Button className="w-full">
-                  View Users
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        {session ? (
+          <UserProfile />
+        ) : (
+          <Card className="w-full max-w-md">
+            <CardHeader>
+              <CardTitle>Bienvenido a Pulpocon 2025</CardTitle>
+              <CardDescription>
+                Una aplicación web moderna construida con Next.js, TypeScript, shadcn/ui, y Prisma
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Esta aplicación incluye:
+              </p>
+              <ul className="text-sm space-y-1">
+                <li>• Next.js 15 con App Router</li>
+                <li>• TypeScript para seguridad de tipos</li>
+                <li>• shadcn/ui components</li>
+                <li>• Prisma ORM con PostgreSQL</li>
+                <li>• Sistema de gestión de usuarios</li>
+                <li>• Autenticación con Google</li>
+              </ul>
+              <div className="pt-4 space-y-2">
+                <LoginButton />
+                <Link href="/users">
+                  <Button variant="outline" className="w-full">
+                    Ver Usuarios
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
