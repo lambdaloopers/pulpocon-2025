@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_1:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U pulpocon_user -d pulpocon_db"]
       interval: 10s
@@ -20,4 +20,4 @@ services:
       retries: 5
 
 volumes:
-  postgres_data:
+  postgres_data_1:
