@@ -1,6 +1,5 @@
 'use client'
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,13 +14,10 @@ export default function Home() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
+        <img
+          className="dark:invert w-[180px] h-[38px]"
           src="/next.svg"
           alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
         />
         
         {session ? (
@@ -65,12 +61,10 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              className="dark:invert"
+            <img
+              className="dark:invert w-5 h-5"
               src="/vercel.svg"
               alt="Vercel logomark"
-              width={20}
-              height={20}
             />
             Deploy now
           </a>
@@ -91,12 +85,11 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
+          <img
             aria-hidden
             src="/file.svg"
             alt="File icon"
-            width={16}
-            height={16}
+            className="w-4 h-4"
           />
           Learn
         </a>
@@ -106,12 +99,11 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
+          <img
             aria-hidden
             src="/window.svg"
             alt="Window icon"
-            width={16}
-            height={16}
+            className="w-4 h-4"
           />
           Examples
         </a>
@@ -121,12 +113,11 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
+          <img
             aria-hidden
             src="/globe.svg"
             alt="Globe icon"
-            width={16}
-            height={16}
+            className="w-4 h-4"
           />
           Go to nextjs.org →
         </a>
