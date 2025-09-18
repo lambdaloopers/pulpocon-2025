@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import { prisma } from '@/lib/prisma'
 
 const handler = NextAuth({
   providers: [
@@ -9,10 +10,43 @@ const handler = NextAuth({
     })
   ],
   callbacks: {
-    async session({ session }) {
+    async signIn({ user, account }) {
+      if (account?.provider === 'google' && user.email) {
+        try {
+          const existingUser = await prisma.user.findUnique({
+            where: { email: user.email }
+          })
+
+          if (!existingUser) {
+            await prisma.user.create({
+              data: {
+                email: user.email,
+                name: user.name || '',
+              }
+            })
+          }
+        } catch (error) {
+          console.error('Error creating user:', error)
+          return false
+        }
+      }
+      return true
+    },
+    async session({ session, token }) {
+      if (session.user?.email) {
+        const user = await prisma.user.findUnique({
+          where: { email: session.user.email }
+        })
+        if (user) {
+          session.user.id = user.id
+        }
+      }
       return session
     },
-    async jwt({ token }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
       return token
     }
   },
