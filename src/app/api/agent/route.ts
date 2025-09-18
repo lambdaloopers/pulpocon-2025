@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { convertToModelMessages, streamText, UIMessage, stepCountIs } from 'ai';
+import { convertToModelMessages, streamText, UIMessage, stepCountIs, tool } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { experimental_createMCPClient as createMCPClient } from 'ai';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import z from 'zod';
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,37 +35,50 @@ export async function POST(req: NextRequest) {
 
     const { messages }: { messages: UIMessage[] } = await req.json();
 
-    const dsn = process.env.DATABASE_URL || '';
-    const mcpClient = await createMCPClient({
-      transport: new StdioClientTransport({
-        command: 'npx',
-        args: [
-          '-y',
-          '@bytebase/dbhub',
-          '--dsn',
-          dsn
-        ],
-      }),
-    });
+    // const dsn = process.env.DATABASE_URL || '';
+    // const mcpClient = await createMCPClient({
+    //   transport: new StdioClientTransport({
+    //     command: 'npx',
+    //     args: [
+    //       '-y',
+    //       '@bytebase/dbhub',
+    //       '--dsn',
+    //       dsn
+    //     ],
+    //   }),
+    // });
 
-    const tools = await mcpClient.tools();
+    // const tools = await mcpClient.tools();
 
     const userData = JSON.stringify(user);
 
     const result = streamText({
       model: openai('gpt-4.1'),
       system: `
-      Eres un agente encargado de responder preguntas sobre la base de datos Postgresql que tienes disponible.
+      Eres un agente encargado de hacer match entre el usuario que te está hablando y el resto de los usuarios existentes en base a sus perfiles.
 
-      IMPORTANTE:
-      - Siempre mira que tablas tienes disponibles antes de responder.
-      - Siempre mira que columnas tiene cada tabla antes de responder.
-      - Siempre mira que relaciones tiene cada tabla antes de responder.
+      Idealmente deberías de encontrar dos matches para el usuario: uno basado en aspectos técnicos y otro basado en intereses.
+
+      También es importante que con cada match recomiendes un tema de conversación informal y coloquial para romper el hielo.
 
       Estás hablando con ${userData}, tenlo en cuenta para dirigirte a la persona y para cuando tengas que hacer matches.
       `,
       messages: convertToModelMessages(messages),
-      tools: tools,
+      tools: {
+        get_profiles: tool({
+            name: 'get_profiles',
+            description: 'Obtener datos de los usuarios y sus perfiles',
+            inputSchema: z.object({}),
+            execute: async () => {
+              const profiles = await prisma.profile.findMany({
+                include: {
+                  user: true
+                }
+              })
+              return profiles
+            }
+        })
+      },
       stopWhen: stepCountIs(10),
     });
 
