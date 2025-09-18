@@ -143,46 +143,6 @@ export function ProfileForm({ profile, onSave, onCancel }: ProfileFormProps) {
 
           <div className="space-y-2">
             <label className="text-sm font-medium text-cyan-300">
-              Intereses
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newInterest}
-                onChange={(e) => setNewInterest(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest())}
-                className="flex-1 px-3 py-2 bg-white/10 border border-white/30 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
-                placeholder="Agregar interés..."
-              />
-              <Button
-                type="button"
-                onClick={addInterest}
-                className="bg-cyan-400 hover:bg-cyan-500 text-white"
-              >
-                Agregar
-              </Button>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {formData.interests.map((interest, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-cyan-400/20 text-cyan-300 rounded-full text-sm flex items-center gap-2"
-                >
-                  {interest}
-                  <button
-                    type="button"
-                    onClick={() => removeInterest(interest)}
-                    className="text-cyan-400 hover:text-cyan-200"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-cyan-300">
               Habilidades Técnicas
             </label>
             <div className="flex gap-2">
@@ -213,6 +173,46 @@ export function ProfileForm({ profile, onSave, onCancel }: ProfileFormProps) {
                     type="button"
                     onClick={() => removeTechSkill(skill)}
                     className="text-purple-400 hover:text-purple-200"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-cyan-300">
+              Intereses no profesionales
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newInterest}
+                onChange={(e) => setNewInterest(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest())}
+                className="flex-1 px-3 py-2 bg-white/10 border border-white/30 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+                placeholder="Agregar interés no profesional..."
+              />
+              <Button
+                type="button"
+                onClick={addInterest}
+                className="bg-cyan-400 hover:bg-cyan-500 text-white"
+              >
+                Agregar
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {formData.interests.map((interest, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-cyan-400/20 text-cyan-300 rounded-full text-sm flex items-center gap-2"
+                >
+                  {interest}
+                  <button
+                    type="button"
+                    onClick={() => removeInterest(interest)}
+                    className="text-cyan-400 hover:text-cyan-200"
                   >
                     ×
                   </button>

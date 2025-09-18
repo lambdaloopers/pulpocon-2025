@@ -63,22 +63,6 @@ export function ProfileDisplay({ profile, onEdit }: ProfileDisplayProps) {
           </div>
         )}
 
-        {profile.interests.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-cyan-300">Intereses</p>
-            <div className="flex flex-wrap gap-2">
-              {profile.interests.map((interest, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-cyan-400/20 text-cyan-300 rounded-full text-sm"
-                >
-                  {interest}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
         {profile.techSkills.length > 0 && (
           <div className="space-y-2">
             <p className="text-sm font-medium text-cyan-300">Habilidades Técnicas</p>
@@ -89,6 +73,22 @@ export function ProfileDisplay({ profile, onEdit }: ProfileDisplayProps) {
                   className="px-3 py-1 bg-purple-400/20 text-purple-300 rounded-full text-sm"
                 >
                   {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {profile.interests.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-cyan-300">Intereses no profesionales</p>
+            <div className="flex flex-wrap gap-2">
+              {profile.interests.map((interest, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-cyan-400/20 text-cyan-300 rounded-full text-sm"
+                >
+                  {interest}
                 </span>
               ))}
             </div>
