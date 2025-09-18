@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 interface Profile {
   id?: string
@@ -30,12 +31,21 @@ export function ProfileDisplay({ profile, onEdit }: ProfileDisplayProps) {
               Tu información en TentaCool
             </CardDescription>
           </div>
-          <Button
-            onClick={onEdit}
-            className="bg-cyan-400 hover:bg-cyan-500 text-white"
-          >
-            Editar
-          </Button>
+          <div className="flex gap-3">
+            <Link href="/chat">
+              <Button
+                className="bg-purple-400 hover:bg-purple-500 text-white"
+              >
+                Ir al Chat
+              </Button>
+            </Link>
+            <Button
+              onClick={onEdit}
+              className="bg-cyan-400 hover:bg-cyan-500 text-white"
+            >
+              Editar
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
