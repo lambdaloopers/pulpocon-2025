@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { LogoutButton } from './logout-button'
 
@@ -45,9 +46,11 @@ export function UserProfile() {
         {session.user?.image && (
           <div className="space-y-2">
             <p className="text-sm font-medium">Imagen:</p>
-            <img 
+            <Image 
               src={session.user.image} 
               alt="Avatar" 
+              width={64}
+              height={64}
               className="w-16 h-16 rounded-full"
             />
           </div>

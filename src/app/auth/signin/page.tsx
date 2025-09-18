@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 
 export default function SignIn() {
-  const [providers, setProviders] = useState<any>(null)
+  const [providers, setProviders] = useState<Record<string, { id: string; name: string }> | null>(null)
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -36,7 +36,7 @@ export default function SignIn() {
           </CardHeader>
           <CardContent className="space-y-4">
             {providers &&
-              Object.values(providers).map((provider: any) => (
+              Object.values(providers).map((provider: { id: string; name: string }) => (
                 <div key={provider.name}>
                   <Button
                     onClick={() => signIn(provider.id)}
