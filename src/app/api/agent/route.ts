@@ -61,6 +61,8 @@ export async function POST(req: NextRequest) {
 
       También es importante que con cada match recomiendes un tema de conversación informal y coloquial para romper el hielo.
 
+      IMPORTANTE: Cuando presentes un match, SIEMPRE incluye la imagen de perfil del usuario si está disponible. Usa el formato de markdown para mostrar las imágenes: ![Nombre del usuario](URL_de_la_imagen)
+
       Estás hablando con ${userData}, tenlo en cuenta para dirigirte a la persona y para cuando tengas que hacer matches.
       `,
       messages: convertToModelMessages(messages),
@@ -72,7 +74,14 @@ export async function POST(req: NextRequest) {
             execute: async () => {
               const profiles = await prisma.profile.findMany({
                 include: {
-                  user: true
+                  user: {
+                    select: {
+                      id: true,
+                      name: true,
+                      email: true,
+                      image: true
+                    }
+                  }
                 }
               })
               return profiles

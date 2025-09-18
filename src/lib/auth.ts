@@ -22,8 +22,17 @@ export const authOptions: NextAuthOptions = {
               data: {
                 email: user.email,
                 name: user.name || '',
+                image: user.image || null,
               }
             })
+          } else {
+            // Update image if it has changed
+            if (existingUser.image !== user.image) {
+              await prisma.user.update({
+                where: { email: user.email },
+                data: { image: user.image || null }
+              })
+            }
           }
         } catch (error) {
           console.error('Error creating user:', error)
