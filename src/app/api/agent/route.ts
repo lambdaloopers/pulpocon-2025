@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { streamText } from 'ai';
+import { convertToModelMessages, streamText, UIMessage } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
-export async function GET() {
+export async function POST(req: NextRequest) {
   try {
+    const { messages }: { messages: UIMessage[] } = await req.json();
+
     const result = streamText({
       model: openai('gpt-4.1'),
-      prompt: 'Explica lo fabulosa que es la PulpoCon 2025, un evento gastrotech increible que se celebra en la ciudad de Vigo alrededor del desarrollo de software.',
+      system: 'Eres un agente encargado de defender los beneficios de la PulpoCon 2025, un evento gastrotech increible que se celebra en la ciudad de Vigo alrededor del desarrollo de software.',
+      messages: convertToModelMessages(messages),
     });
-
-    // example: use textStream as an async iterable
-    for await (const textPart of result.textStream) {
-      // console.log(textPart);
-    }
 
     return result.toUIMessageStreamResponse()
   } catch (error) {
