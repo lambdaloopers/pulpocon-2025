@@ -2,7 +2,7 @@
 
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
     Conversation,
@@ -10,9 +10,11 @@ import {
     ConversationEmptyState,
     ConversationScrollButton,
 } from '@/components/ai-elements/conversation';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Mic, MicOff } from 'lucide-react';
 import { Message, MessageContent } from '@/components/ai-elements/message';
 import { Response } from '@/components/ai-elements/response';
+import { Button } from '@/components/ui/button';
+import { useSpeechToText } from '@/hooks/use-speech-to-text';
 
 export default function Page() {
     const { messages, sendMessage, status } = useChat({
@@ -21,6 +23,36 @@ export default function Page() {
         }),
     });
     const [input, setInput] = useState('');
+    
+    const {
+        transcript,
+        isListening,
+        isSupported,
+        startListening,
+        stopListening,
+        resetTranscript,
+        error
+    } = useSpeechToText({
+        continuous: false,
+        interimResults: true,
+        language: 'en-US'
+    });
+
+    // Update input when transcript changes
+    useEffect(() => {
+        if (transcript) {
+            setInput(transcript);
+        }
+    }, [transcript]);
+
+    const handleMicrophoneToggle = () => {
+        if (isListening) {
+            stopListening();
+        } else {
+            resetTranscript();
+            startListening();
+        }
+    };
 
     return (
         <>
@@ -60,19 +92,45 @@ export default function Page() {
                     if (input.trim()) {
                         sendMessage({ text: input });
                         setInput('');
+                        resetTranscript();
                     }
                 }}
+                className="flex gap-2 items-center p-4 border-t bg-background"
             >
-                <input
-                    value={input}
-                    onChange={e => setInput(e.target.value)}
-                    disabled={status !== 'ready'}
-                    placeholder="Say something..."
-                />
-                <button type="submit" disabled={status !== 'ready'}>
-                    Submit
-                </button>
+                <div className="flex-1 relative">
+                    <input
+                        value={input}
+                        onChange={e => setInput(e.target.value)}
+                        disabled={status !== 'ready'}
+                        placeholder="Say something..."
+                        className="w-full px-4 py-2 pr-12 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    />
+                    {isSupported && (
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleMicrophoneToggle}
+                            disabled={status !== 'ready'}
+                            className={`absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 ${
+                                isListening ? 'text-red-500 hover:text-red-600' : 'text-muted-foreground hover:text-foreground'
+                            }`}
+                            title={isListening ? 'Stop recording' : 'Start voice input'}
+                        >
+                            {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                        </Button>
+                    )}
+                </div>
+                <Button type="submit" disabled={status !== 'ready' || !input.trim()}>
+                    Send
+                </Button>
             </form>
+            
+            {error && (
+                <div className="px-4 py-2 text-sm text-destructive bg-destructive/10 border-t">
+                    {error}
+                </div>
+            )}
         </>
     );
 }
