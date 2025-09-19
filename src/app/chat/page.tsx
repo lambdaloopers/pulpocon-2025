@@ -80,12 +80,12 @@ export default function Page() {
                                 ) : (
                                     messages.map(message => (
                                         <Message from={message.role} key={message.id} className="mb-4">
-                                            <MessageContent className={message.role === 'user' ? 'bg-cyan-400/20 text-white border border-cyan-400/30' : 'bg-white/10 text-white border border-white/20'}>
+                                            <MessageContent>
                                             {
                                             message.parts.map((part, index) => {
                                                 switch (part.type) {
                                                     case 'text':
-                                                        return <Response key={index} className="text-white">{part.text}</Response>
+                                                        return <Response key={index}>{part.text}</Response>
                                                     default:
                                                         return null
                                                 }
