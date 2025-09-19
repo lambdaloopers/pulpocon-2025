@@ -19,10 +19,9 @@ interface MatchesData {
 
 interface ProfileMatchListProps {
   matchesData: MatchesData
-  onStartChat?: (match: Match) => void
 }
 
-export function ProfileMatchList({ matchesData, onStartChat }: ProfileMatchListProps) {
+export function ProfileMatchList({ matchesData }: ProfileMatchListProps) {
   if (!matchesData?.matches || matchesData.matches.length === 0) {
     return (
       <div className="text-center py-8">
@@ -47,7 +46,6 @@ export function ProfileMatchList({ matchesData, onStartChat }: ProfileMatchListP
           <ProfileMatchCard
             key={index}
             match={match}
-            onStartChat={onStartChat}
           />
         ))}
       </div>

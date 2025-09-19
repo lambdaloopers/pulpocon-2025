@@ -23,7 +23,7 @@ interface ProfileMatchCardProps {
   onConnect?: (matchId: string) => void
 }
 
-export function ProfileMatchCard({ match, onConnect }: ProfileMatchCardProps) {
+export function ProfileMatchCard({ match }: ProfileMatchCardProps) {
   const [isConnecting, setIsConnecting] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
 
@@ -42,7 +42,6 @@ export function ProfileMatchCard({ match, onConnect }: ProfileMatchCardProps) {
 
       if (response.ok) {
         setIsConnected(true)
-        onConnect?.(match.id)
       } else {
         const error = await response.json()
         console.error('Error creating connection:', error.error)

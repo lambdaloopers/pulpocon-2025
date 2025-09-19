@@ -103,12 +103,6 @@ export default function Page() {
         return null;
     };
 
-    const handleStartChat = (match: Match) => {
-        // Handle starting a chat with the matched user
-        const message = `¡Hola! Me gustaría conectar con ${match.name}. ${match.conversation_starter ? `Podríamos hablar sobre: ${match.conversation_starter}` : ''}`;
-        sendMessage({ text: message });
-    };
-
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
             <div className="container mx-auto px-4 py-8">
@@ -166,7 +160,6 @@ export default function Page() {
                                                         <div key={index} className="w-full">
                                                             <ProfileMatchList 
                                                                 matchesData={matchesData}
-                                                                onStartChat={handleStartChat}
                                                             />
                                                         </div>
                                                     );
