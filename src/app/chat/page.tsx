@@ -16,6 +16,7 @@ import { Message, MessageContent } from '@/components/ai-elements/message';
 import { Response } from '@/components/ai-elements/response';
 import { Button } from '@/components/ui/button';
 import { useSpeechToText } from '@/hooks/use-speech-to-text';
+import { ProfileMatchList } from '@/components/profile/profile-match-list';
 
 export default function Page() {
     const { messages, sendMessage, status } = useChat({
@@ -55,6 +56,59 @@ export default function Page() {
         }
     };
 
+    // Function to detect and parse matches JSON
+    const detectMatchesJson = (text: string) => {
+        try {
+            // Look for JSON patterns in the text
+            const jsonRegex = /\{[^{}]*"matches"[^{}]*\[[^\]]*\][^{}]*\}/g;
+            const jsonMatch = text.match(jsonRegex);
+            
+            if (jsonMatch && jsonMatch[0]) {
+                const jsonString = jsonMatch[0];
+                const parsed = JSON.parse(jsonString);
+                if (parsed.matches && Array.isArray(parsed.matches) && parsed.matches.length > 0) {
+                    return parsed;
+                }
+            }
+            
+            // Fallback: try to find nested JSON
+            const startIndex = text.indexOf('{"matches"');
+            if (startIndex !== -1) {
+                let braceCount = 0;
+                let endIndex = startIndex;
+                
+                for (let i = startIndex; i < text.length; i++) {
+                    if (text[i] === '{') braceCount++;
+                    if (text[i] === '}') {
+                        braceCount--;
+                        if (braceCount === 0) {
+                            endIndex = i;
+                            break;
+                        }
+                    }
+                }
+                
+                if (endIndex > startIndex) {
+                    const jsonString = text.substring(startIndex, endIndex + 1);
+                    const parsed = JSON.parse(jsonString);
+                    if (parsed.matches && Array.isArray(parsed.matches) && parsed.matches.length > 0) {
+                        return parsed;
+                    }
+                }
+            }
+        } catch (error) {
+            // Not valid JSON, continue with normal rendering
+            console.log('No valid matches JSON found:', error);
+        }
+        return null;
+    };
+
+    const handleStartChat = (match: any) => {
+        // Handle starting a chat with the matched user
+        const message = `¡Hola! Me gustaría conectar con ${match.name}. ${match.conversation_starter ? `Podríamos hablar sobre: ${match.conversation_starter}` : ''}`;
+        sendMessage({ text: message });
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
             <div className="container mx-auto px-4 py-8">
@@ -90,22 +144,44 @@ export default function Page() {
                                         className="[&_h3]:text-white [&_h3]:text-2xl [&_h3]:font-bold [&_p]:text-blue-200 [&_p]:text-lg [&_p]:font-medium"
                                     />
                                 ) : (
-                                    messages.map(message => (
-                                        <Message from={message.role} key={message.id} className="mb-4">
-                                            <MessageContent>
-                                            {
-                                            message.parts.map((part, index) => {
-                                                switch (part.type) {
-                                                    case 'text':
-                                                        return <Response key={index}>{part.text}</Response>
-                                                    default:
-                                                        return null
+                                    messages.map(message => {
+                                        // Check if this message contains matches JSON
+                                        const hasMatches = message.role === 'assistant' && 
+                                            message.parts.some(part => 
+                                                part.type === 'text' && detectMatchesJson(part.text)
+                                            );
+                                        
+                                        return (
+                                            <Message from={message.role} key={message.id} className="mb-4">
+                                                <MessageContent variant={hasMatches ? "flat" : "contained"}>
+                                                {
+                                                message.parts.map((part, index) => {
+                                                    switch (part.type) {
+                                                        case 'text':
+                                            // Check if this is from assistant and contains matches JSON
+                                            if (message.role === 'assistant') {
+                                                const matchesData = detectMatchesJson(part.text);
+                                                if (matchesData) {
+                                                    return (
+                                                        <div key={index} className="w-full">
+                                                            <ProfileMatchList 
+                                                                matchesData={matchesData}
+                                                                onStartChat={handleStartChat}
+                                                            />
+                                                        </div>
+                                                    );
                                                 }
-                                                })
                                             }
-                                            </MessageContent>
-                                        </Message>
-                                    ))
+                                                            return <Response key={index}>{part.text}</Response>
+                                                        default:
+                                                            return null
+                                                    }
+                                                    })
+                                                }
+                                                </MessageContent>
+                                            </Message>
+                                        );
+                                    })
                                 )}
                             </ConversationContent>
                             <ConversationScrollButton className="text-cyan-400" />

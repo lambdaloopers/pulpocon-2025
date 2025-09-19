@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { convertToModelMessages, streamText, UIMessage, stepCountIs, tool } from 'ai';
 import { openai } from '@ai-sdk/openai';
-import { experimental_createMCPClient as createMCPClient } from 'ai';
-import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -64,6 +62,22 @@ export async function POST(req: NextRequest) {
       IMPORTANTE: Cuando presentes un match, SIEMPRE incluye la imagen de perfil del usuario si está disponible. Usa el formato de markdown para mostrar las imágenes: ![Nombre del usuario](URL_de_la_imagen)
 
       Estás hablando con ${userData}, tenlo en cuenta para dirigirte a la persona y para cuando tengas que hacer matches.
+
+      Cuando encuentres un listado de matches, devuelvelo siempre como un json de este formato:
+      {
+        "matches": [
+          {
+            "name": "Nombre del usuario",
+            "image": "URL de la imagen",
+            "job_position": "Posicion del usuario",
+            "company": "Empresa del usuario",
+            "tech_skills": "Habilidades técnicas del usuario separadas por comas",
+            "interests": "Intereses del usuario separados por comas",
+            "conversation_starter": "Tema específico de conversación para romper el hielo"
+          }
+        ]
+      }
+    }
       `,
       messages: convertToModelMessages(messages),
       tools: {
