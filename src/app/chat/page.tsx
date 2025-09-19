@@ -16,7 +16,7 @@ import { Message, MessageContent } from '@/components/ai-elements/message';
 import { Response } from '@/components/ai-elements/response';
 import { Button } from '@/components/ui/button';
 import { useSpeechToText } from '@/hooks/use-speech-to-text';
-import { ProfileMatchList } from '@/components/profile/profile-match-list';
+import { Match, ProfileMatchList } from '@/components/profile/profile-match-list';
 
 export default function Page() {
     const { messages, sendMessage, status } = useChat({
@@ -103,7 +103,7 @@ export default function Page() {
         return null;
     };
 
-    const handleStartChat = (match: any) => {
+    const handleStartChat = (match: Match) => {
         // Handle starting a chat with the matched user
         const message = `¡Hola! Me gustaría conectar con ${match.name}. ${match.conversation_starter ? `Podríamos hablar sobre: ${match.conversation_starter}` : ''}`;
         sendMessage({ text: message });

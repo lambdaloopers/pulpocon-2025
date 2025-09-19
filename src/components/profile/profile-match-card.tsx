@@ -83,7 +83,7 @@ export function ProfileMatchCard({ match, onStartChat }: ProfileMatchCardProps) 
           <div className="space-y-2 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
             <h4 className="text-sm font-semibold text-yellow-700">💡 Tema para romper el hielo</h4>
             <p className="text-xs text-gray-700 italic">
-              "{match.conversation_starter}"
+              {match.conversation_starter}
             </p>
           </div>
         )}

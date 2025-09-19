@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoginButton } from "@/components/auth/login-button";
 import { UserProfile } from "@/components/auth/user-profile";

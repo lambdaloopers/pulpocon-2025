@@ -3,7 +3,7 @@
 import { ProfileMatchCard } from "./profile-match-card"
 import { Users, Heart } from "lucide-react"
 
-interface Match {
+export interface Match {
   name: string
   image?: string
   job_position: string
