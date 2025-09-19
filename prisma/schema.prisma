@@ -14,13 +14,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  profile   Profile?
+  id                 String       @id @default(cuid())
+  name               String
+  email              String       @unique
+  image              String?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  profile            Profile?
+  connectionsRequested Connection[] @relation("UserConnections")
+  connectionsReceived  Connection[] @relation("UserTargets")
 }
 
 model Profile {
@@ -34,4 +36,16 @@ model Profile {
   techSkills  String[] @default([])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Connection {
+  id          String   @id @default(cuid())
+  requesterId String
+  targetId    String
+  createdAt   DateTime @default(now())
+  
+  requester   User     @relation("UserConnections", fields: [requesterId], references: [id], onDelete: Cascade)
+  target      User     @relation("UserTargets", fields: [targetId], references: [id], onDelete: Cascade)
+  
+  @@unique([requesterId, targetId])
 }

@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LogoutButton } from './logout-button'
 import { ProfileForm } from '../profile/profile-form'
 import { ProfileDisplay } from '../profile/profile-display'
+import { ConnectionsDisplay } from '../profile/connections-display'
 
 interface Profile {
   id?: string
@@ -129,6 +130,8 @@ export function UserProfile() {
           </div>
         </CardContent>
       </Card>
+
+      <ConnectionsDisplay />
 
       {profile ? (
         <ProfileDisplay
