@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       {
         "matches": [
           {
-            "id": "ID del usuario",
+            "id": "ID del user. Aqui es importante que sea el ID del usuario, no el ID del perfil.",
             "name": "Nombre del usuario",
             "image": "URL de la imagen",
             "job_position": "Posicion del usuario",
