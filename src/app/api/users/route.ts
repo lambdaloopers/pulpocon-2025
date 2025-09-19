@@ -6,6 +6,9 @@ export async function GET() {
     const users = await prisma.user.findMany({
       orderBy: {
         createdAt: 'desc'
+      },
+      include: {
+        profile: true
       }
     })
     return NextResponse.json(users)

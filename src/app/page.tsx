@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { LoginButton } from "@/components/auth/login-button";
 import { UserProfile } from "@/components/auth/user-profile";
 import { useSession } from "next-auth/react";
+import Link from 'next/link';
 
 export default function Home() {
   const { data: session } = useSession()
@@ -22,8 +23,16 @@ export default function Home() {
           </div>
 
           {session ? (
-            <div className="w-full max-w-2xl">
+            <div className="w-full max-w-2xl space-y-6">
               <UserProfile />
+              <div className="text-center">
+                <Link 
+                  href="/users"
+                  className="inline-flex items-center px-6 py-3 bg-cyan-500 text-white font-semibold rounded-lg hover:bg-cyan-600 transition-colors"
+                >
+                  Ver todos los usuarios
+                </Link>
+              </div>
             </div>
           ) : (
             <Card className="w-full max-w-2xl bg-white/10 backdrop-blur-lg border-white/20">
