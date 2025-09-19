@@ -2,8 +2,8 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { SmartAvatar } from "@/components/ui/smart-avatar"
 import { MessageCircle, Briefcase, MapPin } from "lucide-react"
 
 interface Match {
@@ -22,27 +22,17 @@ interface ProfileMatchCardProps {
 }
 
 export function ProfileMatchCard({ match, onStartChat }: ProfileMatchCardProps) {
-  const initials = match.name
-    .split(' ')
-    .map(word => word.charAt(0))
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-
-    return (
+  return (
     <Card className="w-full max-w-sm mx-auto bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 hover:border-blue-300 transition-all duration-300 shadow-lg hover:shadow-xl">
       <CardHeader className="text-center pb-4">
         <div className="flex justify-center mb-3">
-          <Avatar className="h-16 w-16 ring-2 ring-blue-300">
-            <AvatarImage 
-              src={match.image} 
-              alt={match.name}
-              className="object-cover"
-            />
-            <AvatarFallback className="bg-blue-600 text-white text-lg font-semibold">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
+          <SmartAvatar
+            src={match.image}
+            name={match.name}
+            size={64}
+            className="h-16 w-16 ring-2 ring-blue-300"
+            fallbackClassName="text-white text-lg font-semibold"
+          />
         </div>
         <CardTitle className="text-xl font-bold text-gray-800">
           {match.name}
