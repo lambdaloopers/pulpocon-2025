@@ -22,7 +22,7 @@ export function useSpeechToText(options: SpeechToTextOptions = {}): SpeechToText
   const {
     continuous = false,
     interimResults = true,
-    language = 'en-US',
+    language = 'es-ES',
   } = options;
 
   const [transcript, setTranscript] = useState('');

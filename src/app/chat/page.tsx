@@ -35,7 +35,7 @@ export default function Page() {
     } = useSpeechToText({
         continuous: false,
         interimResults: true,
-        language: 'en-US'
+        language: 'es-ES'
     });
 
     // Update input when transcript changes
