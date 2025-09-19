@@ -10,7 +10,8 @@ import {
     ConversationEmptyState,
     ConversationScrollButton,
 } from '@/components/ai-elements/conversation';
-import { MessageSquare, Mic, MicOff } from 'lucide-react';
+import { MessageSquare, Mic, MicOff, User } from 'lucide-react';
+import Link from 'next/link';
 import { Message, MessageContent } from '@/components/ai-elements/message';
 import { Response } from '@/components/ai-elements/response';
 import { Button } from '@/components/ui/button';
@@ -58,7 +59,18 @@ export default function Page() {
         <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
             <div className="container mx-auto px-4 py-8">
                 <div className="max-w-4xl mx-auto">
-                    <div className="text-center mb-8">
+                    <div className="text-center mb-8 relative">
+                        <div className="absolute top-0 right-0">
+                            <Link href="/">
+                                <Button 
+                                    variant="outline" 
+                                    className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+                                >
+                                    <User className="h-4 w-4 mr-2" />
+                                    Perfil
+                                </Button>
+                            </Link>
+                        </div>
                         <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">
                             Tenta<span className="text-cyan-400">Cool</span> Chat
                         </h1>
