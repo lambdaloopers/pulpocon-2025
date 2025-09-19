@@ -148,7 +148,7 @@ export default function UsersPage() {
 
         <div className="space-y-8">
           {/* Primera fila - Desliza hacia la derecha */}
-          <Marquee pauseOnHover className="[--duration:20s]">
+          <Marquee pauseOnHover className="[--duration:60s]">
             {sortedUsers.map((user) => {
               const hasProfile = user.profile && (
                 user.profile.jobTitle || 
@@ -252,7 +252,7 @@ export default function UsersPage() {
           </Marquee>
 
           {/* Segunda fila - Desliza hacia la izquierda */}
-          <Marquee pauseOnHover reverse className="[--duration:25s]">
+          <Marquee pauseOnHover reverse className="[--duration:60s]">
             {sortedUsers.map((user) => {
               const hasProfile = user.profile && (
                 user.profile.jobTitle || 
